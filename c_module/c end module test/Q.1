@@ -1,1 +1,28 @@
+// sum of prime number
 
+#include<stdio.h>
+int main()
+{  printf("prime number are:");
+	int n=10;
+	int sum=0;
+	for(int i=2;i<=n;i++)
+	{
+		int status=0;
+		for(int j=2;j<=i/2;j++)
+		{
+			if(i%j==0)
+			{
+				status=1;
+				break;
+			}
+		}
+		if(status==0)
+	{
+		printf("%d",i);
+		
+		sum=sum+i;
+	}
+
+	}
+		printf("\nsum of 1 to %d numbers are :%d",n,sum);
+}
