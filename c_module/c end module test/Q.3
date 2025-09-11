@@ -1,1 +1,112 @@
+/* Q3. Program to manage TO-DO-LIST Implement structure to store task details (task id, description , Status)
+write menu driven code to add task , update task , display task  Use Functions in it .*/
 
+#include<stdio.h>
+#include <stdlib.h>
+typedef struct task{
+  int id;
+	char description[50];
+	int status;
+}task;
+void add(task*,int);
+void display(task*,int);
+void update(task*,int);
+int main()
+{
+
+	int size=2;
+		task t[size];
+		while(1){
+		
+	printf("\nenter 1 to add");
+		printf("\nenter  2 to display");
+		printf("\nenter 3 to update");
+		printf("\nenter 4 to exit"); 
+		int ch;
+	printf("\nenter your choise:");
+	scanf("%d",&ch);
+	switch(ch)
+	{
+	
+	case 1:
+			add(t,size);
+	break;
+    case 2:
+         	display(t,size);
+				break;
+	case 3:
+	update(t,size);
+    	break;
+    	case 4:
+    		exit(0);
+    		break;
+    default:
+		printf("\n invalid choise.");
+		
+		}
+}
+}
+
+void add(task* t,int size)
+{ 	for(int i=0;i<size;i++)
+{
+
+	printf("\nenter details");
+	printf("\n enter id:");
+	scanf("%d",&t[i].id);
+	printf("enter description :");
+	scanf("%49s",&t[i].description);
+	printf("\nenter 0/1 for task is complet or not");
+	scanf("%d",&t[i].status);
+
+}
+}
+void display(task* t,int size)
+{
+
+for(int i=0;i<size;i++)
+{
+	printf("\n id:%d",t[i].id);
+	printf("\n description:%s",t[i].description);
+		if(t[i].status==1)
+	{
+		printf("\ntask is complet");
+	}
+	else
+	{
+		printf("\ntask is not complet");
+	}
+
+}
+}
+void update(task* t,int size)
+{
+	int ch;
+	printf("\nenter id you want to upadte");
+	scanf("%d",&ch);
+	int found=0;
+	
+	for(int i=0;i<size;i++)
+	{
+	if(t[i].id==ch)
+	{
+	printf("\nupdate details");
+
+	printf("\nenter id:");
+	scanf("%d",&t[i].id);
+	printf("\nenter description :");
+	scanf("%49s",&t[i].description);
+	printf("\nenter 0/1 for task is complet or not");
+	scanf("%d",&t[i].status);
+		printf("\nid:%d",t[i].id);
+	printf("\n description:%s",t[i].description);
+	printf("\n status:%d",t[i].status);
+	
+	found=1;
+	}
+}
+if(found==0)
+{
+	printf("\nid not found");
+}
+}
