@@ -1,1 +1,39 @@
+//Q2. Accept string and replace one char from speical symbol 
 
+
+
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+	char a[10];
+	
+	printf("enter string");
+	
+	scanf("%s",a);
+	printf("\nstring:%s",a);
+	 char ch;
+	printf("\nenter chacracter you want to change");
+	scanf(" %c",&ch);
+	char symbol;
+  printf("\n enter symbol you want to update");
+  scanf(" %c",&symbol);
+  int found=0;
+  for(int i=0;i<=a[i];i++)
+  {
+  
+  if(a[i]==ch)
+  {
+  	a[i]=symbol;
+  	found=1;
+  }
+}
+  
+  if(found==0)
+  {
+  	printf("\ncharcater not matched!");
+  }
+  else
+  printf("%s",a);
+
+}
