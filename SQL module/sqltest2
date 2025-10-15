@@ -1,1 +1,49 @@
+Name:Dnyaneshwari Rokade.
 
+SQL Test 2 Set C
+
+
+1. Write a SQL statement to display all the information of all actors.
+
+     --> select * from actor;
+
+2. Write a query to display the columns in descending order of rating of movie
+
+--> select * from movie order by IMDB_rating desc;
+
+3. Write a SQL statement to display names of actors who are male and received awards more than 10.
+
+--> select name from actor WHERE gender = 'Male' AND no_of_awards > 10;
+
+4. Write a SQL query to display the role followed by all movie id for the actor who is having actor id as 101 
+
+-->select role,mid from roles where a_id=101;
+
+5. Write a SQL query to find the actor who is not Indian
+
+-->select * from actor where Nationality is not "Indian"; 
+
+6. Write a SQL statement to find the number of actors worked in each movie.
+
+-->SELECT m_id, COUNT(a_id) AS num_of_actors
+   FROM actor_movie
+   GROUP BY m_id;
+
+
+7. Write a SQL statement to find the role played by ‘Amir khan’ actor in 3 idiots movie.
+
+-->  select role from roles where m_id=
+     (select m_id from movie where mname="3 idiots")
+     and a_id=(select a_id from actor where name="Amir khan");
+
+8. Write a SQL statement to find the details of movie having lowest total budget.
+
+-->select *from movie order by t_budget limit 1; 
+
+9. Write a SQL statement that finds out count of actors according to gender
+
+--> select gender,count(*) from actor group by gender;
+
+10. Write a query to find all the roles of actor who have played in movie with id 3
+
+--> select role from roles where m_id=3;
