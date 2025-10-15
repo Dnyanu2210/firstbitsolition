@@ -1,1 +1,173 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct player {
+    int jersey_number;
+    char player_name[20];
+    int runs;
+    int wickets;
+    int matches_played;
+} player;
+
+void store(player **players, int *size, int *count);
+void display(player *players, int count);
+void update(player *players, int count);
+void remove_player(player *players, int *count);
+void sorted_players_by_runs(player *players, int count);
+void sorted_players_by_wickets(player *players, int count);
+void top3_by_runs(player *players, int count);
+void top3_by_wickets(player *players, int count);
+
+int main() {
+    int size = 10, count = 0;
+    player *players = (player*)malloc(size * sizeof(player));
+    if (!players) {
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
+
+    int choice;
+    while (1) {
+        printf("\n--- Player Management ---\n");
+        printf("1. Store players\n2. Display players\n3. Update player\n4. Remove player\n");
+        printf("5. Sort by runs\n6. Sort by wickets\n7. Top 3 by runs\n8. Top 3 by wickets\n10. Exit\n");
+        printf("Choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1: store(&players, &size, &count); break;
+            case 2: display(players, count); break;
+            case 3: update(players, count); break;
+            case 4: remove_player(players, &count); break;
+            case 5: sorted_players_by_runs(players, count); break;
+            case 6: sorted_players_by_wickets(players, count); break;
+            case 7: top3_by_runs(players, count); break;
+            case 8: top3_by_wickets(players, count); break;
+            case 10: free(players); printf("Exiting...\n"); return 0;
+            default: printf("Invalid choice!\n");
+        }
+    }
+    return 0;
+}
+
+// Store player
+void store(player **players, int *size, int *count) {
+    if (*count >= *size) {
+        int extra;
+        printf("Array full. Enter extra size to expand: ");
+        scanf("%d", &extra);
+        *size += extra;
+        *players = (player*)realloc(*players, (*size) * sizeof(player));
+        if (!*players) { printf("Memory allocation failed!\n"); exit(1); }
+    }
+
+    printf("Enter details for player %d:\n", *count + 1);
+    printf("Jersey Number: "); scanf("%d", &(*players)[*count].jersey_number);
+    printf("Player Name: "); scanf("%s", (*players)[*count].player_name);
+    printf("Runs: "); scanf("%d", &(*players)[*count].runs);
+    printf("Wickets: "); scanf("%d", &(*players)[*count].wickets);
+    printf("Matches Played: "); scanf("%d", &(*players)[*count].matches_played);
+
+    (*count)++;
+    printf("Player added successfully!\n");
+}
+
+// Display players
+void display(player *players, int count) {
+    int i;
+    for (i = 0; i < count; i++) {
+        printf("\nPlayer %d:\n", i + 1);
+        printf("Jersey: %d\nName: %s\nRuns: %d\nWickets: %d\nMatches: %d\n",
+            players[i].jersey_number, players[i].player_name,
+            players[i].runs, players[i].wickets, players[i].matches_played);
+    }
+}
+
+// Update player
+void update(player *players, int count) {
+    int jersey, i, choice;
+    printf("Enter jersey number to update: ");
+    scanf("%d", &jersey);
+    for (i = 0; i < count; i++) {
+        if (players[i].jersey_number == jersey) {
+            while (1) {
+                printf("\n1.Name 2.Runs 3.Wickets 4.Matches 5.Jersey 6.Exit\nChoice: ");
+                scanf("%d", &choice);
+                if (choice == 6) break;
+                switch (choice) {
+                    case 1: printf("New Name: "); scanf("%s", players[i].player_name); break;
+                    case 2: printf("New Runs: "); scanf("%d", &players[i].runs); break;
+                    case 3: printf("New Wickets: "); scanf("%d", &players[i].wickets); break;
+                    case 4: printf("New Matches: "); scanf("%d", &players[i].matches_played); break;
+                    case 5: printf("New Jersey: "); scanf("%d", &players[i].jersey_number); break;
+                    default: printf("Invalid choice!\n");
+                }
+            }
+            return;
+        }
+    }
+    printf("Player not found!\n");
+}
+
+// Remove player
+void remove_player(player *players, int *count) {
+    int jersey, i, j;
+    printf("Enter jersey number to remove: ");
+    scanf("%d", &jersey);
+    for (i = 0; i < *count; i++) {
+        if (players[i].jersey_number == jersey) {
+            for (j = i; j < *count - 1; j++)
+                players[j] = players[j + 1];
+            (*count)--;
+            printf("Player removed successfully!\n");
+            return;
+        }
+    }
+    printf("Player not found!\n");
+}
+
+// Sort by runs
+void sorted_players_by_runs(player *players, int count) {
+    int i, j;
+    player temp;
+    for (i = 0; i < count - 1; i++)
+        for (j = 0; j < count - i - 1; j++)
+            if (players[j].runs < players[j+1].runs) {
+                temp = players[j]; players[j] = players[j+1]; players[j+1] = temp;
+            }
+    printf("Players sorted by runs.\n");
+    display(players, count);
+}
+
+// Sort by wickets
+void sorted_players_by_wickets(player *players, int count) {
+    int i, j;
+    player temp;
+    for (i = 0; i < count - 1; i++)
+        for (j = 0; j < count - i - 1; j++)
+            if (players[j].wickets < players[j+1].wickets) {
+                temp = players[j]; players[j] = players[j+1]; players[j+1] = temp;
+            }
+    printf("Players sorted by wickets.\n");
+    display(players, count);
+}
+
+// Top 3 by runs
+void top3_by_runs(player *players, int count) {
+    sorted_players_by_runs(players, count);
+    int i;
+    printf("\nTop 3 Players by Runs:\n");
+    for (i = 0; i < count && i < 3; i++)
+        printf("%d. %s - %d runs\n", i+1, players[i].player_name, players[i].runs);
+}
+
+// Top 3 by wickets
+void top3_by_wickets(player *players, int count) {
+    sorted_players_by_wickets(players, count);
+    int i;
+    printf("\nTop 3 Players by Wickets:\n");
+    for (i = 0; i < count && i < 3; i++)
+        printf("%d. %s - %d wickets\n", i+1, players[i].player_name, players[i].wickets);
+}
 
