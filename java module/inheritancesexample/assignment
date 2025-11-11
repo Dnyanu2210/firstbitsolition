@@ -1,1 +1,59 @@
+package javademo;
+class Student {
+    int fbId;
+    String name;
+    double distance;
+
+    Student() {
+        this.fbId = 101;
+        this.name = "Default Student";
+        this.distance = 5.0;
+    }
+
+    Student(int fbId, String name, double distance) {
+        this.fbId = fbId;
+        this.name = name;
+        this.distance = distance;
+    }
+
+    void display() {
+        System.out.println("FB ID    : " + fbId);
+        System.out.println("Name     : " + name);
+        System.out.println("Distance : " + distance + " km");
+    }
+}
+
+class PlacedStudent extends Student {
+    String companyName;
+    String designation;
+
+    PlacedStudent() {
+        super();
+        this.companyName = "Default Company";
+        this.designation = "Default Designation";
+    }
+
+    PlacedStudent(int fbId, String name, double distance, String companyName, String designation) {
+        super(fbId, name, distance);
+        this.companyName = companyName;
+        this.designation = designation;
+    }
+
+    void display() {
+        super.display();
+        System.out.println("Company Name : " + companyName);
+        System.out.println("Designation  : " + designation);
+        System.out.println("----------------------------------");
+    }
+}
+
+public class TestStudent {
+    public static void main(String[] args) {
+        Student s1 = new Student(1001, "Anita Sharma", 7.8);
+        s1.display();
+
+        PlacedStudent p1 = new PlacedStudent(2001, "Rohit Kumar", 3.4, "TCS", "Software Developer");
+        p1.display();
+    }
+}
 
