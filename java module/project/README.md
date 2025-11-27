@@ -97,9 +97,9 @@ Add your dark theme screenshots here!
 👨‍💻 Author
 
 Your Name
-⭐ GitHub: https://github.com/your-profile
+⭐ GitHub: 
 
-📧 Email: your-email@example.com
+📧 Email: dnyaneshwarirokade21@gmail.com
 
 <div align="center">
 🌙✨ If you like this Neon README, star the repo!
