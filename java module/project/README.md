@@ -101,7 +101,4 @@ Your Name
 
 📧 Email: dnyaneshwarirokade21@gmail.com
 
-<div align="center">
-🌙✨ If you like this Neon README, star the repo!
-🔥 Made for Dark Mode Lovers ⚡
-</div>
+
