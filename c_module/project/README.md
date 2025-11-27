@@ -135,7 +135,130 @@ Bachelor of Engineering - Computer Science
 📝 License
 
 This project is open-source and free to use.
-<p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=VT323&size=48&duration=120&pause=600&color=FF00F7&center=true&vCenter=true&repeat=false&width=1000&height=140&lines=▉ CYBERPUNK PLAYER MANAGEMENT SYSTEM ▉;▉ LOADING STRUCTS & MEMORY MODULES ▉;▉ SORTING ENGINE ACTIVATED ▉;▉ NEON GLITCH INTERFACE READY ▉;▉ SYSTEM ONLINE ⚡ ▉" alt="Cyberpunk Glitch Banner v2"/>
-</p>
+⚡🖤 CYBERPUNK PLAYER MANAGEMENT SYSTEM – C PROJECT
+<div align="center">
+██████╗ ██╗   ██╗██████╗ ███████╗██████╗ ██████╗ ██╗   ██╗███╗   ██╗██╗  ██╗
+██╔══██╗╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗██╔══██╗██║   ██║████╗  ██║╚██╗██╔╝
+██████╔╝ ╚████╔╝ ██████╔╝█████╗  ██████╔╝██████╔╝██║   ██║██╔██╗ ██║ ╚███╔╝ 
+██╔═══╝   ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗██╔══██╗██║   ██║██║╚██╗██║ ██╔██╗ 
+██║        ██║   ██║  ██║███████╗██║  ██║██████╔╝╚██████╔╝██║ ╚████║██╔╝ ██╗
+╚═╝        ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚═╝  ╚═══╝╚═╝  ╚═╝
 
+🏏 NEXT GEN CRICKET PLAYER STATS MANAGER – BUILT IN C
+<img src="https://img.shields.io/badge/C-Programming-000000?style=for-the-badge&logo=c&logoColor=00f0ff"> <img src="https://img.shields.io/badge/Memory-Dynamic%20Allocation-7600ff?style=for-the-badge&labelColor=000"> <img src="https://img.shields.io/badge/Sorting-Algorithms-00ffaa?style=for-the-badge&labelColor=000"> <img src="https://img.shields.io/badge/Status-Stable-brightgreen?style=for-the-badge&labelColor=000"> </div>
+🌌 Project Overview
+
+Welcome to CyberPMS — a neon-styled, futuristic C-based Player Management System, designed to manage cricket players using:
+
+🧠 Structs
+📦 Dynamic Memory Allocation
+🔁 Sorting Algorithms
+🧹 Efficient Updating & Removal System
+⚡ Interactive Menu-Driven Program
+
+This project blends DSA + C programming + Real statistics management.
+
+🧩 Core Features
+🏏 PLAYER OPERATIONS
+
+✔ Add new players dynamically
+✔ Display all players
+✔ Update any player field
+✔ Remove players safely
+
+📊 STATISTICAL OPERATIONS
+
+✔ Sort players by Runs (DESC)
+✔ Sort players by Wickets (DESC)
+✔ Top 3 Performers by Runs
+✔ Top 3 Performers by Wickets
+
+⚙ SYSTEM PERFORMANCE
+
+✔ Auto-expandable memory (realloc)
+✔ Minimal time complexity
+✔ Bubble-sort based ranking
+✔ Full data integrity checks
+
+🧬 C Concepts Mastered Here
+Concept	Usage
+struct	Player blueprint
+Dynamic Memory	malloc, realloc, free
+String handling	Names & inputs
+Pointers to pointer	Dynamic array expansion
+Sorting logic	Bubble sort
+Data shifting	Remove player
+🗂 Folder Structure
+CyberPMS/
+│
+├── main.c
+├── player struct
+├── store()
+├── update()
+├── remove_player()
+├── sorted_players_by_runs()
+├── sorted_players_by_wickets()
+├── top3_by_runs()
+└── top3_by_wickets()
+
+💻 Menu Interface
+--- Player Management ---
+1. Store players
+2. Display players
+3. Update player
+4. Remove player
+5. Sort by runs
+6. Sort by wickets
+7. Top 3 by runs
+8. Top 3 by wickets
+10. Exit
+
+⚡ How to Compile & Run
+🔧 Compile
+gcc main.c -o cyberpms
+
+🚀 Run
+./cyberpms
+
+🔥 Sample Output
+Player added successfully!
+
+Player 1:
+Jersey: 7
+Name: Dhoni
+Runs: 10500
+Wickets: 3
+Matches: 350
+
+Players sorted by runs.
+
+Top 3 Players by Runs:
+1. Kohli - 12000 runs
+2. Rohit - 9500 runs
+3. Dhoni - 10500 runs
+
+🚀 Future Upgrades (Premium Roadmap)
+
+✨ Add search by name / jersey
+✨ File storage (save & load players)
+✨ Color-coded terminal output
+✨ GUI version (C++ Qt)
+✨ Multi-sport support
+
+👨‍💻 Author
+
+Your Name
+🌐 GitHub: https://github.com/your-profile
+
+📧 Email: your-email@example.com
+
+<div align="center">
+███████╗██╗   ██╗██████╗ ███████╗██████╗ ███╗   ███╗██████╗ 
+██╔════╝██║   ██║██╔══██╗██╔════╝██╔══██╗████╗ ████║██╔══██╗
+█████╗  ██║   ██║██████╔╝█████╗  ██████╔╝██╔████╔██║██████╔╝
+██╔══╝  ██║   ██║██╔══██╗██╔══╝  ██╔══██╗██║╚██╔╝██║██╔══██╗
+██║     ╚██████╔╝██║  ██║███████╗██║  ██║██║ ╚═╝ ██║██║  ██║
+╚═╝      ╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
+
+🌙✨ CYBERPUNK MODE ACTIVATED — Dark, Neon, and Beautiful
+</div>
