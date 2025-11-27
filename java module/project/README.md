@@ -97,7 +97,7 @@ Add your dark theme screenshots here!
 👨‍💻 Author
 
 Your Name
-⭐ GitHub: 
+⭐ GitHub: https://github.com/Dnyanu2210
 
 📧 Email: dnyaneshwarirokade21@gmail.com
 
