@@ -1,1 +1,449 @@
+package banksystem;
+
+import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Scanner;
+
+/* ===================== TRANSACTION CLASS ===================== */
+
+class Transaction {
+    String type;
+    double amount;
+    LocalDate date;
+
+    Transaction(String type, double amount) {
+        this.type = type;
+        this.amount = amount;
+        this.date = LocalDate.now();
+    }
+
+    public String toString() {
+        return date + " | " + type + " | " + amount;
+    }
+}
+
+/* ===================== ABSTRACT ACCOUNT CLASS ===================== */
+
+abstract class Accounts {
+
+    int accountNumber;
+    String name;
+    double accountBalance;
+    Date accountCreationDate;
+    boolean active = true;
+
+    Transaction[] transactions = new Transaction[100];
+    int transactionCount = 0;
+
+    Accounts(int accountNumber, String name, double balance) {
+        this.accountNumber = accountNumber;
+        this.name = name;
+        this.accountBalance = balance;
+        this.accountCreationDate = new Date();
+        this.active = true;
+
+        System.out.println("Account Created Successfully: " + accountNumber + " | " + name); // NEW MESSAGE
+    }
+
+    void addTransaction(String type, double amt) {
+        if(transactionCount < transactions.length) {
+            transactions[transactionCount++] = new Transaction(type, amt);
+        }
+    }
+
+    void deposit(double amount) {
+        if(!active) {
+            System.out.println("Account is frozen!");
+            return;
+        }
+        accountBalance += amount;
+        addTransaction("Deposit", amount);
+        System.out.println("₹" + amount + " Deposited Successfully. New Balance: ₹" + accountBalance); // NEW MESSAGE
+    }
+
+    void withdraw(double amount) {
+        if(active && accountBalance >= amount) {
+            accountBalance -= amount;
+            addTransaction("Withdraw", amount);
+            System.out.println("₹" + amount + " Withdrawn Successfully. New Balance: ₹" + accountBalance); // NEW MESSAGE
+        } else {
+            System.out.println("Withdraw failed!");
+        }
+    }
+
+    void freeze() { active = false; System.out.println("Account Frozen Successfully"); }
+    void unfreeze() { active = true; System.out.println("Account Unfrozen Successfully"); }
+
+    Transaction[] getTransactions() { return transactions; }
+    int getTransactionCount() { return transactionCount; }
+
+    abstract double calculateInterest();
+
+    public String toString() {
+        return accountNumber + " | " + name + " | Balance: " + accountBalance + " | Active: " + active;
+    }
+}
+
+/* ===================== SAVING ACCOUNT ===================== */
+
+class SavingAccount extends Accounts {
+
+    final double MIN_BALANCE = 10000;
+    double interestRate;
+
+    SavingAccount(int no, String name, double bal, double rate) {
+        super(no, name, bal);
+        this.interestRate = rate;
+    }
+
+    @Override
+    void withdraw(double amount) {
+        if((accountBalance - amount) >= MIN_BALANCE) {
+            super.withdraw(amount);
+        } else {
+            System.out.println("Maintain minimum balance ₹10,000");
+        }
+    }
+
+    @Override
+    double calculateInterest() {
+        return accountBalance * interestRate / 100;
+    }
+}
+
+/* ===================== CURRENT ACCOUNT ===================== */
+
+class CurrentAccount extends Accounts {
+
+    double overdraftLimit;
+
+    CurrentAccount(int no, String name, double bal, double limit) {
+        super(no, name, bal);
+        this.overdraftLimit = limit;
+    }
+
+    @Override
+    void withdraw(double amount) {
+        if(accountBalance + overdraftLimit >= amount) {
+            accountBalance -= amount;
+            addTransaction("Withdraw (OD)", amount);
+            System.out.println("₹" + amount + " Withdrawn Using Overdraft. New Balance: ₹" + accountBalance); // NEW MESSAGE
+        } else {
+            System.out.println("Overdraft limit exceeded!");
+        }
+    }
+
+    @Override
+    double calculateInterest() {
+        return 0;
+    }
+}
+
+/* ===================== SALARY ACCOUNT ===================== */
+
+class SalaryAccount extends Accounts {
+
+    LocalDate lastTransactionDate;
+
+    SalaryAccount(int no, String name, double bal) {
+        super(no, name, bal);
+        lastTransactionDate = LocalDate.now();
+    }
+
+    @Override
+    void deposit(double amount) {
+        super.deposit(amount);
+        lastTransactionDate = LocalDate.now();
+    }
+
+    @Override
+    void withdraw(double amount) {
+        long diff = ChronoUnit.DAYS.between(lastTransactionDate, LocalDate.now());
+
+        if(diff >= 60) {
+            freeze();
+            System.out.println("Account auto-frozen due to 60 days inactivity!");
+            return;
+        }
+
+        super.withdraw(amount);
+        lastTransactionDate = LocalDate.now();
+    }
+
+    @Override
+    double calculateInterest() {
+        return 0;
+    }
+}
+
+/* ===================== LOAN ACCOUNT ===================== */
+
+class LoanAccount extends Accounts {
+
+    double loanAmount;
+    double interestRate;
+    int months;
+
+    LoanAccount(int no, String name, double loanAmount, double rate, int months) {
+        super(no, name, 0);
+        this.loanAmount = loanAmount;
+        this.interestRate = rate;
+        this.months = months;
+    }
+
+    double calculateMonthlyEMI() {
+        double interest = loanAmount * interestRate / 100;
+        return (loanAmount + interest) / months;
+    }
+
+    void payEMI(double amount) {
+        if (loanAmount <= 0) {
+            System.out.println("Loan already fully paid!");
+            return;
+        }
+
+        loanAmount -= amount;
+        addTransaction("EMI Paid", amount);
+
+        System.out.println("EMI Payment Successful: ₹" + amount); // NEW MESSAGE
+
+        if(loanAmount <= 0) {
+            loanAmount = 0;
+            System.out.println("🎉 Loan fully paid!");
+        } else {
+            System.out.println("Remaining Loan: ₹" + loanAmount);
+        }
+    }
+
+    void directPayment(double amount) {
+        payEMI(amount);
+        addTransaction("Direct Payment", amount);
+        System.out.println("Direct Loan Payment Successful: ₹" + amount); // NEW MESSAGE
+    }
+
+    @Override
+    double calculateInterest() {
+        return loanAmount * interestRate / 100;
+    }
+
+    public String toString() {
+        return super.toString() + " | Loan Remaining: " + loanAmount;
+    }
+}
+
+/* ===================== CONTROLLER ===================== */
+
+class BankController {
+
+    Accounts[] accounts = new Accounts[10];
+    int accountCount = 0;
+
+    String[] bankTransactions = new String[100];
+    int bankTransactionCount = 0;
+
+    void createSaving(int no, String name, double bal, double rate) {
+        accounts[accountCount++] = new SavingAccount(no, name, bal, rate);
+        System.out.println("Saving Account Created Successfully!"); // NEW MESSAGE
+    }
+
+    void createSalary(int no, String name, double bal) {
+        accounts[accountCount++] = new SalaryAccount(no, name, bal);
+        System.out.println("Salary Account Created Successfully!"); // NEW MESSAGE
+    }
+
+    void createCurrent(int no, String name, double bal, double od) {
+        accounts[accountCount++] = new CurrentAccount(no, name, bal, od);
+        System.out.println("Current Account Created Successfully!"); // NEW MESSAGE
+    }
+
+    void createLoan(int no, String name, double loan, double rate, int months) {
+        accounts[accountCount++] = new LoanAccount(no, name, loan, rate, months);
+        System.out.println("Loan Account Created Successfully!"); // NEW MESSAGE
+    }
+
+    Accounts findAccount(int no) {
+        for(int i=0; i<accountCount; i++) {
+            if(accounts[i].accountNumber == no) return accounts[i];
+        }
+        return null;
+    }
+
+    void deposit(int no, double amt) {
+        Accounts a = findAccount(no);
+        if(a != null) {
+            a.deposit(amt);
+            addBankTransaction("Deposit to " + no + ": ₹" + amt);
+        }
+    }
+
+    void withdraw(int no, double amt) {
+        Accounts a = findAccount(no);
+        if(a != null) {
+            a.withdraw(amt);
+            addBankTransaction("Withdraw from " + no + ": ₹" + amt);
+        }
+    }
+
+    void payEMI(int no) {
+        Accounts a = findAccount(no);
+        if(a instanceof LoanAccount) {
+            double emi = ((LoanAccount)a).calculateMonthlyEMI();
+            ((LoanAccount)a).payEMI(emi);
+        } else {
+            System.out.println("Not a loan account!");
+        }
+    }
+
+    void directLoanPayment(int no, double amt) {
+        Accounts a = findAccount(no);
+        if(a instanceof LoanAccount) {
+            ((LoanAccount)a).directPayment(amt);
+        } else {
+            System.out.println("Not a loan account!");
+        }
+    }
+
+    void freeze(int no) {
+        Accounts a = findAccount(no);
+        if(a != null) a.freeze();
+    }
+
+    void unfreeze(int no) {
+        Accounts a = findAccount(no);
+        if(a != null) a.unfreeze();
+    }
+
+    void addBankTransaction(String t) {
+        bankTransactions[bankTransactionCount++] = t;
+    }
+
+    void showAllAccounts() {
+        for(int i=0; i<accountCount; i++) {
+            System.out.println(accounts[i]);
+        }
+    }
+
+    void showAccountTransactions(int no) {
+        Accounts a = findAccount(no);
+        if(a != null) {
+            System.out.println("Transactions for A/c " + no + ":");
+            for(int i=0; i < a.getTransactionCount(); i++) {
+                System.out.println(a.getTransactions()[i]);
+            }
+        }
+    }
+
+    void showBankTransactions() {
+        System.out.println("BANK TRANSACTIONS:");
+        for(int i=0; i<bankTransactionCount; i++) {
+            System.out.println(bankTransactions[i]);
+        }
+    }
+}
+
+/* ===================== VIEW ===================== */
+
+public class Main {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        BankController bank = new BankController();
+
+        while(true) {
+            System.out.println("\n===== BANK MENU =====");
+            System.out.println("1. Create Account");
+            System.out.println("2. Deposit");
+            System.out.println("3. Withdraw");
+            System.out.println("4. Freeze / Unfreeze");
+            System.out.println("5. Show All Accounts");
+            System.out.println("6. Show Account Transactions");
+            System.out.println("7. Show Bank Transactions");
+            System.out.println("8. Pay EMI");
+            System.out.println("9. Direct Loan Payment");
+            System.out.println("10. Exit");
+            System.out.print("Enter choice: ");
+            int ch = sc.nextInt();
+
+            switch(ch) {
+
+                case 1:
+                    System.out.println("1.Saving 2.Salary 3.Current 4.Loan");
+                    int type = sc.nextInt();
+
+                    System.out.print("A/c No: ");
+                    int no = sc.nextInt();
+
+                    System.out.print("Name: ");
+                    String name = sc.next();
+
+                    System.out.print("Balance/Loan: ");
+                    double bal = sc.nextDouble();
+
+                    if(type==1) bank.createSaving(no, name, bal, 4);
+                    else if(type==2) bank.createSalary(no, name, bal);
+                    else if(type==3) bank.createCurrent(no, name, bal, 50000);
+                    else if(type==4) bank.createLoan(no, name, bal, 10, 12);
+
+                    break;
+
+                case 2:
+                    System.out.print("Acc No: ");
+                    int dAcc = sc.nextInt();
+                    System.out.print("Amount: ");
+                    double dAmt = sc.nextDouble();
+                    bank.deposit(dAcc, dAmt);
+                    break;
+
+                case 3:
+                    System.out.print("Acc No: ");
+                    int wAcc = sc.nextInt();
+                    System.out.print("Amount: ");
+                    double wAmt = sc.nextDouble();
+                    bank.withdraw(wAcc, wAmt);
+                    break;
+
+                case 4:
+                    System.out.print("Acc No: ");
+                    int f = sc.nextInt();
+                    System.out.print("1.Freeze 2.Unfreeze: ");
+                    int op = sc.nextInt();
+                    if(op==1) bank.freeze(f);
+                    else bank.unfreeze(f);
+                    break;
+
+                case 5:
+                    bank.showAllAccounts();
+                    break;
+
+                case 6:
+                    System.out.print("Acc No: ");
+                    int tAcc = sc.nextInt();
+                    bank.showAccountTransactions(tAcc);
+                    break;
+
+                case 7:
+                    bank.showBankTransactions();
+                    break;
+
+                case 8:
+                    System.out.print("Loan Acc No: ");
+                    int loanAcc = sc.nextInt();
+                    bank.payEMI(loanAcc);
+                    break;
+
+                case 9:
+                    System.out.print("Loan Acc No: ");
+                    int la = sc.nextInt();
+                    System.out.print("Amount: ");
+                    double amt = sc.nextDouble();
+                    bank.directLoanPayment(la, amt);
+                    break;
+
+                case 10:
+                    System.exit(0);
+            }
+        }
+    }
+}
 
