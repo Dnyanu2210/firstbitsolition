@@ -135,3 +135,7 @@ Bachelor of Engineering - Computer Science
 📝 License
 
 This project is open-source and free to use.
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=VT323&size=48&duration=120&pause=600&color=FF00F7&center=true&vCenter=true&repeat=false&width=1000&height=140&lines=▉ CYBERPUNK PLAYER MANAGEMENT SYSTEM ▉;▉ LOADING STRUCTS & MEMORY MODULES ▉;▉ SORTING ENGINE ACTIVATED ▉;▉ NEON GLITCH INTERFACE READY ▉;▉ SYSTEM ONLINE ⚡ ▉" alt="Cyberpunk Glitch Banner v2"/>
+</p>
+
